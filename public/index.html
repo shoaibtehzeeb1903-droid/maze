@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Adventure - Learn Coding Through Play</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/login.css">
+    <link rel="stylesheet" href="styles/character-select.css">
+    <link rel="stylesheet" href="styles/game.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="screen active">
+        <div class="loading-content">
+            <div class="castle-logo">🏰</div>
+            <h1>Maze Adventure</h1>
+            <p>Loading your coding quest...</p>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Menu Screen -->
+    <div id="main-menu" class="screen">
+        <div class="menu-background">
+            <div class="floating-elements">
+                <div class="cloud cloud1">☁️</div>
+                <div class="cloud cloud2">☁️</div>
+                <div class="star star1">⭐</div>
+                <div class="star star2">✨</div>
+            </div>
+        </div>
+        <div class="menu-content">
+            <div class="game-title">
+                <h1>🏰 Maze Adventure</h1>
+                <p class="subtitle">Learn Coding Through Epic Quests!</p>
+            </div>
+            <div class="menu-buttons">
+                <button class="menu-btn primary" onclick="showScreen('login-screen')">
+                    <span class="btn-icon">🚀</span>
+                    Start Adventure
+                </button>
+                <button class="menu-btn secondary" onclick="showScreen('guest-mode')">
+                    <span class="btn-icon">👤</span>
+                    Play as Guest
+                </button>
+                <button class="menu-btn secondary" onclick="showScreen('parent-portal')">
+                    <span class="btn-icon">👨‍👩‍👧‍👦</span>
+                    Parent Portal
+                </button>
+                <button class="menu-btn secondary" onclick="showInstructions()">
+                    <span class="btn-icon">📚</span>
+                    How to Play
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="screen">
+        <div class="login-container">
+            <button class="back-btn" onclick="showScreen('main-menu')">← Back</button>
+            <div class="login-form">
+                <h2>🗝️ Enter Your Realm</h2>
+                <div class="form-tabs">
+                    <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+                    <button class="tab-btn" onclick="switchTab('register')">Create Account</button>
+                </div>
+                
+                <!-- Login Form -->
+                <div id="login-form" class="tab-content active">
+                    <div class="input-group">
+                        <label for="login-username">Username</label>
+                        <input type="text" id="login-username" placeholder="Enter your hero name">
+                    </div>
+                    <div class="input-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Enter your secret code">
+                    </div>
+                    <button class="login-btn" onclick="handleLogin()">
+                        <span class="btn-icon">⚔️</span>
+                        Begin Quest
+                    </button>
+                </div>
+
+                <!-- Register Form -->
+                <div id="register-form" class="tab-content">
+                    <div class="input-group">
+                        <label for="reg-username">Choose Username</label>
+                        <input type="text" id="reg-username" placeholder="Your hero name">
+                    </div>
+                    <div class="input-group">
+                        <label for="reg-password">Create Password</label>
+                        <input type="password" id="reg-password" placeholder="Your secret code">
+                    </div>
+                    <div class="input-group">
+                        <label for="reg-email">Parent's Email</label>
+                        <input type="email" id="reg-email" placeholder="parent@example.com">
+                    </div>
+                    <div class="input-group">
+                        <label for="reg-age">Age</label>
+                        <select id="reg-age">
+                            <option value="">Select Age</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                        </select>
+                    </div>
+                    <button class="login-btn" onclick="handleRegister()">
+                        <span class="btn-icon">🌟</span>
+                        Create Hero
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Parent Portal -->
+    <div id="parent-portal" class="screen">
+        <div class="parent-container">
+            <button class="back-btn" onclick="showScreen('main-menu')">← Back</button>
+            <div class="parent-content">
+                <h2>👨‍👩‍👧‍👦 Parent Portal</h2>
+                <div class="parent-login">
+                    <div class="input-group">
+                        <label for="parent-email">Parent Email</label>
+                        <input type="email" id="parent-email" placeholder="your-email@example.com">
+                    </div>
+                    <div class="input-group">
+                        <label for="parent-password">Password</label>
+                        <input type="password" id="parent-password" placeholder="Enter password">
+                    </div>
+                    <button class="login-btn" onclick="handleParentLogin()">
+                        <span class="btn-icon">🔐</span>
+                        Access Portal
+                    </button>
+                </div>
+                <div class="parent-features">
+                    <h3>Parent Features:</h3>
+                    <ul>
+                        <li>📊 Track your child's progress</li>
+                        <li>🎯 View completed levels and skills learned</li>
+                        <li>⏰ Set play time limits</li>
+                        <li>🏆 Celebrate achievements together</li>
+                        <li>📧 Receive progress reports</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Character Selection Screen -->
+    <div id="character-select" class="screen">
+        <div class="character-container">
+            <h2>🌟 Choose Your Hero</h2>
+            <p class="character-subtitle">Select your character for the coding adventure!</p>
+            
+            <div class="characters-grid">
+                <div class="character-card" data-character="knight" onclick="selectCharacter('knight')">
+                    <div class="character-avatar">🛡️</div>
+                    <h3>Sir Codealot</h3>
+                    <p>Brave Knight</p>
+                    <div class="character-stats">
+                        <span>⚔️ Courage</span>
+                        <span>🛡️ Protection</span>
+                    </div>
+                </div>
+
+                <div class="character-card" data-character="wizard" onclick="selectCharacter('wizard')">
+                    <div class="character-avatar">🧙‍♂️</div>
+                    <h3>Merlin Debug</h3>
+                    <p>Wise Wizard</p>
+                    <div class="character-stats">
+                        <span>✨ Magic</span>
+                        <span>📚 Wisdom</span>
+                    </div>
+                </div>
+
+                <div class="character-card" data-character="archer" onclick="selectCharacter('archer')">
+                    <div class="character-avatar">🏹</div>
+                    <h3>Robin Loop</h3>
+                    <p>Swift Archer</p>
+                    <div class="character-stats">
+                        <span>🎯 Precision</span>
+                        <span>💨 Speed</span>
+                    </div>
+                </div>
+
+                <div class="character-card" data-character="princess" onclick="selectCharacter('princess')">
+                    <div class="character-avatar">👸</div>
+                    <h3>Princess Pixel</h3>
+                    <p>Royal Coder</p>
+                    <div class="character-stats">
+                        <span>👑 Leadership</span>
+                        <span>💎 Grace</span>
+                    </div>
+                </div>
+
+                <div class="character-card" data-character="dragon" onclick="selectCharacter('dragon')">
+                    <div class="character-avatar">🐉</div>
+                    <h3>Draco Script</h3>
+                    <p>Friendly Dragon</p>
+                    <div class="character-stats">
+                        <span>🔥 Power</span>
+                        <span>🛡️ Loyalty</span>
+                    </div>
+                </div>
+
+                <div class="character-card" data-character="ninja" onclick="selectCharacter('ninja')">
+                    <div class="character-avatar">🥷</div>
+                    <h3>Ninja Code</h3>
+                    <p>Stealthy Warrior</p>
+                    <div class="character-stats">
+                        <span>👤 Stealth</span>
+                        <span>⚡ Agility</span>
+                    </div>
+                </div>
+
+                <div class="character-card" data-character="robot" onclick="selectCharacter('robot')">
+                    <div class="character-avatar">🤖</div>
+                    <h3>Bot Binary</h3>
+                    <p>Tech Guardian</p>
+                    <div class="character-stats">
+                        <span>⚙️ Logic</span>
+                        <span>🔧 Precision</span>
+                    </div>
+                </div>
+
+                <div class="character-card" data-character="fairy" onclick="selectCharacter('fairy')">
+                    <div class="character-avatar">🧚‍♀️</div>
+                    <h3>Fairy Function</h3>
+                    <p>Magical Helper</p>
+                    <div class="character-stats">
+                        <span>✨ Magic</span>
+                        <span>🌟 Joy</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="character-actions">
+                <button class="back-btn" onclick="goBack()">← Back</button>
+                <button class="continue-btn" id="continue-btn" onclick="startGame()" disabled>
+                    Start Adventure! →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+        <div class="game-header">
+            <div class="game-info">
+                <div class="player-info">
+                    <span id="player-character">🛡️</span>
+                    <span id="player-name">Hero</span>
+                </div>
+                <div class="level-info">
+                    <span>Level: <span id="current-level">1</span></span>
+                    <span>⭐ <span id="stars-collected">0</span></span>
+                </div>
+            </div>
+            <div class="game-controls">
+                <button class="control-btn" onclick="pauseGame()">⏸️</button>
+                <button class="control-btn" onclick="showMenu()">📋</button>
+                <button class="control-btn" onclick="resetLevel()">🔄</button>
+            </div>
+        </div>
+
+        <div class="game-content">
+            <div class="maze-container">
+                <canvas id="maze-canvas" width="600" height="400"></canvas>
+                <div class="maze-overlay">
+                    <div id="character-sprite" class="character-sprite"></div>
+                </div>
+            </div>
+
+            <div class="coding-panel">
+                <div class="panel-header">
+                    <h3>🧩 Code Blocks</h3>
+                    <div class="difficulty-indicator">
+                        <span id="difficulty-level">Beginner</span>
+                    </div>
+                </div>
+
+                <div class="code-blocks-palette">
+                    <div class="block-category" data-category="movement">
+                        <h4>Movement</h4>
+                        <div class="code-block" draggable="true" data-command="forward">
+                            <span class="block-icon">⬆️</span>
+                            <span class="block-text">Move Forward</span>
+                        </div>
+                        <div class="code-block" draggable="true" data-command="turn-left">
+                            <span class="block-icon">↪️</span>
+                            <span class="block-text">Turn Left</span>
+                        </div>
+                        <div class="code-block" draggable="true" data-command="turn-right">
+                            <span class="block-icon">↩️</span>
+                            <span class="block-text">Turn Right</span>
+                        </div>
+                    </div>
+
+                    <div class="block-category" data-category="loops">
+                        <h4>Loops</h4>
+                        <div class="code-block loop-block" draggable="true" data-command="repeat">
+                            <span class="block-icon">🔄</span>
+                            <span class="block-text">Repeat</span>
+                            <input type="number" class="repeat-count" value="3" min="1" max="10">
+                            <span class="block-text">times</span>
+                        </div>
+                    </div>
+
+                    <div class="block-category" data-category="conditions">
+                        <h4>Conditions</h4>
+                        <div class="code-block condition-block" draggable="true" data-command="if-wall">
+                            <span class="block-icon">🚧</span>
+                            <span class="block-text">If wall ahead</span>
+                        </div>
+                        <div class="code-block condition-block" draggable="true" data-command="if-treasure">
+                            <span class="block-icon">💎</span>
+                            <span class="block-text">If treasure here</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-workspace">
+                    <div class="workspace-header">
+                        <h4>📝 Your Code</h4>
+                        <div class="workspace-controls">
+                            <button class="workspace-btn" onclick="clearWorkspace()">🗑️ Clear</button>
+                            <button class="workspace-btn" onclick="runCode()">▶️ Run</button>
+                        </div>
+                    </div>
+                    <div id="code-drop-zone" class="code-drop-zone">
+                        <p class="drop-hint">Drag code blocks here to create your program!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Messages -->
+        <div id="game-messages" class="game-messages">
+            <div class="message success" style="display: none;">
+                <span class="message-icon">🎉</span>
+                <span class="message-text">Great job! Level completed!</span>
+            </div>
+            <div class="message error" style="display: none;">
+                <span class="message-icon">❌</span>
+                <span class="message-text">Oops! Try a different approach.</span>
+            </div>
+            <div class="message hint" style="display: none;">
+                <span class="message-icon">💡</span>
+                <span class="message-text">Hint: Try using a loop to repeat actions!</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instructions Modal -->
+    <div id="instructions-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeInstructions()">&times;</span>
+            <h2>🎮 How to Play Maze Adventure</h2>
+            <div class="instructions-content">
+                <div class="instruction-step">
+                    <h3>1. Choose Your Hero 🌟</h3>
+                    <p>Select from 8 unique characters, each with their own special abilities!</p>
+                </div>
+                <div class="instruction-step">
+                    <h3>2. Drag Code Blocks 🧩</h3>
+                    <p>Use movement, loop, and condition blocks to create your program.</p>
+                </div>
+                <div class="instruction-step">
+                    <h3>3. Navigate the Maze 🗺️</h3>
+                    <p>Guide your character through the maze to collect treasures and reach the exit!</p>
+                </div>
+                <div class="instruction-step">
+                    <h3>4. Learn & Progress 📚</h3>
+                    <p>Master coding concepts like sequences, loops, and conditionals as you advance!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/character.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/maze.js"></script>
+    <script src="js/blocks.js"></script>
+</body>
+</html>
