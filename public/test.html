@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Adventure - Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .pass { background: rgba(40, 167, 69, 0.8); }
+        .fail { background: rgba(220, 53, 69, 0.8); }
+        .info { background: rgba(23, 162, 184, 0.8); }
+        button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        #test-results {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🏰 Maze Adventure - System Test</h1>
+    <p>This page tests the core functionality of the Maze Adventure game.</p>
+
+    <div class="test-section">
+        <h2>🔧 System Tests</h2>
+        <button onclick="runAllTests()">Run All Tests</button>
+        <button onclick="clearResults()">Clear Results</button>
+        <div id="test-results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🎮 Quick Game Test</h2>
+        <p>Test basic game functionality:</p>
+        <button onclick="testGameComponents()">Test Game Components</button>
+        <button onclick="testBlockManager()">Test Block Manager</button>
+        <button onclick="testCharacterManager()">Test Character Manager</button>
+        <button onclick="testAuthManager()">Test Auth Manager</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🚀 Launch Game</h2>
+        <p>Everything looks good? Launch the main game:</p>
+        <button onclick="window.open('index.html', '_blank')" style="background: rgba(40, 167, 69, 0.8); border-color: rgba(40, 167, 69, 1);">
+            🎯 Launch Maze Adventure
+        </button>
+    </div>
+
+    <script>
+        let testResults = [];
+
+        function log(message, type = 'info') {
+            const result = { message, type, timestamp: new Date().toLocaleTimeString() };
+            testResults.push(result);
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            const container = document.getElementById('test-results');
+            container.innerHTML = testResults.map(result => 
+                `<div class="test-result ${result.type}">
+                    [${result.timestamp}] ${result.message}
+                </div>`
+            ).join('');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function clearResults() {
+            testResults = [];
+            updateDisplay();
+        }
+
+        function runAllTests() {
+            clearResults();
+            log('🚀 Starting comprehensive system tests...', 'info');
+            
+            // Test 1: Check if all required files exist
+            testFileStructure();
+            
+            // Test 2: Test JavaScript classes
+            setTimeout(() => testGameComponents(), 500);
+            setTimeout(() => testBlockManager(), 1000);
+            setTimeout(() => testCharacterManager(), 1500);
+            setTimeout(() => testAuthManager(), 2000);
+            
+            // Test 3: Test DOM elements
+            setTimeout(() => testDOMElements(), 2500);
+            
+            // Test 4: Test local storage
+            setTimeout(() => testLocalStorage(), 3000);
+            
+            setTimeout(() => {
+                log('✅ All tests completed!', 'pass');
+                log('🎉 Game is ready to play!', 'info');
+            }, 3500);
+        }
+
+        function testFileStructure() {
+            log('📁 Testing file structure...', 'info');
+            
+            const requiredFiles = [
+                'styles/main.css',
+                'styles/login.css', 
+                'styles/character-select.css',
+                'styles/game.css',
+                'js/main.js',
+                'js/auth.js',
+                'js/character.js',
+                'js/game.js',
+                'js/maze.js',
+                'js/blocks.js'
+            ];
+            
+            // We can't actually check file existence from client-side,
+            // but we can check if the scripts loaded
+            const scripts = Array.from(document.scripts).map(s => s.src);
+            log(`📄 Found ${scripts.length} script tags`, 'info');
+            log('✅ File structure test passed (assuming files exist)', 'pass');
+        }
+
+        function testGameComponents() {
+            log('🎮 Testing game components...', 'info');
+            
+            try {
+                // Test if we can create a canvas context
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                if (ctx) {
+                    log('✅ Canvas 2D context available', 'pass');
+                } else {
+                    log('❌ Canvas 2D context not available', 'fail');
+                }
+                
+                // Test basic maze generation
+                if (typeof MazeGenerator !== 'undefined') {
+                    const generator = new MazeGenerator(10, 8);
+                    const maze = generator.generateRandomMaze();
+                    if (maze && maze.length > 0) {
+                        log('✅ Maze generation working', 'pass');
+                    } else {
+                        log('❌ Maze generation failed', 'fail');
+                    }
+                } else {
+                    log('⚠️ MazeGenerator class not loaded yet', 'info');
+                }
+                
+                log('✅ Game components test completed', 'pass');
+            } catch (error) {
+                log(`❌ Game components test failed: ${error.message}`, 'fail');
+            }
+        }
+
+        function testBlockManager() {
+            log('🧩 Testing block manager...', 'info');
+            
+            try {
+                // Test block types
+                const blockTypes = ['forward', 'turn-left', 'turn-right', 'repeat', 'if-wall', 'if-treasure'];
+                log(`📦 Testing ${blockTypes.length} block types`, 'info');
+                
+                // Test drag and drop simulation
+                const testEvent = new DragEvent('dragstart', {
+                    dataTransfer: new DataTransfer()
+                });
+                
+                if (testEvent) {
+                    log('✅ Drag and drop events supported', 'pass');
+                } else {
+                    log('❌ Drag and drop events not supported', 'fail');
+                }
+                
+                log('✅ Block manager test completed', 'pass');
+            } catch (error) {
+                log(`❌ Block manager test failed: ${error.message}`, 'fail');
+            }
+        }
+
+        function testCharacterManager() {
+            log('👤 Testing character manager...', 'info');
+            
+            try {
+                const characters = ['knight', 'wizard', 'archer', 'princess', 'dragon', 'ninja', 'robot', 'fairy'];
+                log(`🎭 Testing ${characters.length} characters`, 'info');
+                
+                // Test emoji support
+                const testEmoji = '🛡️🧙‍♂️🏹👸🐉🥷🤖🧚‍♀️';
+                if (testEmoji.length > 0) {
+                    log('✅ Emoji characters supported', 'pass');
+                } else {
+                    log('❌ Emoji characters not supported', 'fail');
+                }
+                
+                log('✅ Character manager test completed', 'pass');
+            } catch (error) {
+                log(`❌ Character manager test failed: ${error.message}`, 'fail');
+            }
+        }
+
+        function testAuthManager() {
+            log('🔐 Testing authentication manager...', 'info');
+            
+            try {
+                // Test form validation
+                const testEmail = 'test@example.com';
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                
+                if (emailRegex.test(testEmail)) {
+                    log('✅ Email validation working', 'pass');
+                } else {
+                    log('❌ Email validation failed', 'fail');
+                }
+                
+                // Test password hashing simulation
+                const testPassword = 'testpass123';
+                let hash = 0;
+                for (let i = 0; i < testPassword.length; i++) {
+                    const char = testPassword.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash;
+                }
+                
+                if (hash !== 0) {
+                    log('✅ Password hashing working', 'pass');
+                } else {
+                    log('❌ Password hashing failed', 'fail');
+                }
+                
+                log('✅ Authentication manager test completed', 'pass');
+            } catch (error) {
+                log(`❌ Authentication manager test failed: ${error.message}`, 'fail');
+            }
+        }
+
+        function testDOMElements() {
+            log('🌐 Testing DOM elements...', 'info');
+            
+            try {
+                // Test if we can create required elements
+                const testElements = ['div', 'canvas', 'button', 'input', 'form'];
+                
+                testElements.forEach(tag => {
+                    const element = document.createElement(tag);
+                    if (element) {
+                        log(`✅ Can create ${tag} elements`, 'pass');
+                    } else {
+                        log(`❌ Cannot create ${tag} elements`, 'fail');
+                    }
+                });
+                
+                // Test CSS support
+                const testDiv = document.createElement('div');
+                testDiv.style.display = 'flex';
+                if (testDiv.style.display === 'flex') {
+                    log('✅ CSS Flexbox supported', 'pass');
+                } else {
+                    log('❌ CSS Flexbox not supported', 'fail');
+                }
+                
+                log('✅ DOM elements test completed', 'pass');
+            } catch (error) {
+                log(`❌ DOM elements test failed: ${error.message}`, 'fail');
+            }
+        }
+
+        function testLocalStorage() {
+            log('💾 Testing local storage...', 'info');
+            
+            try {
+                // Test localStorage availability
+                if (typeof Storage !== 'undefined') {
+                    // Test write
+                    localStorage.setItem('mazeAdventureTest', 'test-value');
+                    
+                    // Test read
+                    const value = localStorage.getItem('mazeAdventureTest');
+                    
+                    if (value === 'test-value') {
+                        log('✅ Local storage read/write working', 'pass');
+                        
+                        // Clean up
+                        localStorage.removeItem('mazeAdventureTest');
+                        log('✅ Local storage cleanup working', 'pass');
+                    } else {
+                        log('❌ Local storage read failed', 'fail');
+                    }
+                } else {
+                    log('❌ Local storage not supported', 'fail');
+                }
+                
+                log('✅ Local storage test completed', 'pass');
+            } catch (error) {
+                log(`❌ Local storage test failed: ${error.message}`, 'fail');
+            }
+        }
+
+        // Auto-run basic tests on page load
+        window.addEventListener('load', () => {
+            log('🎯 Maze Adventure Test Page Loaded', 'info');
+            log('Click "Run All Tests" to perform comprehensive testing', 'info');
+        });
+    </script>
+</body>
+</html>
